@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>TikTok connected – Podcast Bot</title>
+<link rel="icon" href="../icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<div class="wrap">
+  <header><img src="../icon.png" alt=""><a href="../">Podcast Bot</a></header>
+  <h1 id="title">Almost done</h1>
+  <p id="text">Copy this address and paste it into the Podcast Bot window that asked for it.</p>
+  <div class="box" id="url"></div>
+  <button class="btn" id="copy">Copy address</button>
+</div>
+<script>
+  const url = location.href, params = new URLSearchParams(location.search);
+  document.getElementById("url").textContent = url;
+  if (params.get("error")) {
+    document.getElementById("title").textContent = "TikTok wasn't connected";
+    document.getElementById("text").textContent = "Permission was not given. Run the connect step again and tap Authorize.";
+  } else if (!params.get("code")) {
+    document.getElementById("title").textContent = "Nothing to connect here";
+    document.getElementById("text").textContent = "This page is used when you connect TikTok to Podcast Bot.";
+    document.getElementById("copy").hidden = true;
+  }
+  document.getElementById("copy").addEventListener("click", async e => {
+    try { await navigator.clipboard.writeText(url); e.target.textContent = "Copied"; }
+    catch { getSelection().selectAllChildren(document.getElementById("url")); e.target.textContent = "Press Ctrl+C to copy"; }
+  });
+</script>
+</body>
+</html>
